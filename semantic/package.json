@@ -4,6 +4,7 @@
   "description": "GraphTV Website",
   "main": "gulpfile.js",
   "dependencies": {
+    "gulp-autoprefixer": "^2.3.1",
     "semantic-ui": "^2.2.13"
   },
   "devDependencies": {},
