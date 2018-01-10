@@ -1,5 +1,14 @@
 # GraphTV - Website
 
+## Build Instructions
+
+1. Clone repository
+2. Enter `semantic/`
+3. `npm install`
+	* Will automatically build the output
+
+Make changes and regenerate output files with `gulp build`.
+
 ## Build Status
 
 Coming soon!
