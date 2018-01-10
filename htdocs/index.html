@@ -4,18 +4,40 @@
 	<meta charset="utf-8">
 	<title>GraphTV :: Graph Your Favorite TV Shows</title>
 	<link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/master.css">
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 	<script src="semantic/semantic.min.js"></script>
 </head>
 <body>
 </body>
-	<div class="ui container">
-		<div class="ui action left icon input">
-			<i class="search icon">
-				::before
-			</i>
+	<div class="ui fixed menu" id="navbar">
+		<div class="ui container">
+			<a href="#" class="header item">
+				<img class="logo" id="graphtv_logo" src="assets/images/logo.svg">
+				GraphTV
+			</a>
+			<a class="item">Top Searches</a>
+			<a class="item">Most Votes</a>
+			<div class="right menu">
+				<a class="item">About</a>
+				<a href="https://github.com/graphtv" class="item">
+					Contribute
+					<img class="logo" id="github_logo" src="assets/images/github.svg">
+				</a>
+			</div>
+		</div>
+	</div>
+<div class="ui middle aligned center aligned grid">
+  <div class="column">
+    <h2 class="ui blue image header">
+      <div class="content">Search for a TV Show</div>
+    </h2>
+    <form class="ui large container">
+		<div class="ui action left input fluid">
 			<input type="text" placeholder="Stranger Things" />
 			<div class="ui blue button">Search</div>
 		</div>
-	</div>
+    </form>
+  </div>
+</div>
 </html>

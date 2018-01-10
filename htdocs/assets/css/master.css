@@ -1,0 +1,26 @@
+body > .grid {
+	height: 100%;
+}
+.column {
+	max-width: 450px;
+}
+#navbar {
+	font-size:1.5em;
+}
+#navbar .item {
+	padding-top:0.5em;
+	padding-bottom:0.5em;
+	padding-left:0.5em;
+	padding-right:0.5em;
+}
+#navbar .item .logo {
+	margin-top:0em;
+	margin-bottom:0em;
+	width:1.5em;
+}
+#graphtv_logo {
+	margin-right:0.5em;
+}
+#github_logo {
+	margin-left:0.5em;
+}
