@@ -8,9 +8,44 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
 	<link rel="stylesheet" type="text/css" href="assets/semantic/semantic.min.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/master.css">
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-	<script src="semantic/semantic.min.js"></script>
+	<script src="assets/semantic/semantic.min.js"></script>
+	<script type="text/javascript">
+		// Just until I figure out where this stuff is supposed to go...
+		$(document).ready(function() {
+			$.getJSON('/assets/search.json', function(data) {
+				for (var i = 0; i < data.length; i++) {
+					data[i].d = data[i].y + ' | ' + data[i].r + '/10 | ' + data[i].v + ' votes';
+				}
+				console.log(data);
+				$('.ui.search').search({
+					source: data,
+					fields: {
+						title: 't',
+						description: 'd'
+					},
+					searchFields: [
+						't'
+					],
+					selectFirstResult: true,
+					onSelect: function (result, response) {
+						console.log(result);
+						console.log(response);
+					}
+				});
+			});
+			var content = [
+				{ title: 'Genji' }, { title: 'McCree' }, { title: 'Pharah' },
+				{ title: 'Reaper' }, { title: 'Soldier: 76' }, { title: 'Sombra' },
+				{ title: 'Tracer' }, { title: 'Bastion' }, { title: 'Hanzo' },
+				{ title: 'Junkrat' }, { title: 'Mei' }, { title: 'Torbjörn' },
+				{ title: 'Widowmaker' }, { title: 'D.Va' }, { title: 'Reinhardt' },
+				{ title: 'Roadhog' }, { title: 'Winston' }, { title: 'Zarya' },
+				{ title: 'Ana' }, { title: 'Lúcio' }, { title: 'Mercy' },
+				{ title: 'Symmetra' }, { title: 'Zenyatta' }
+			];
+		});
+	</script>
 </head>
 <body>
 	<div class="ui fixed menu" id="navbar">
