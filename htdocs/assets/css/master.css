@@ -7,26 +7,33 @@ body > .grid {
 .full-height {
 	height:100%;
 }
-.column {
+#search_column {
 	max-width: 450px;
 }
 #navbar {
-	font-size:1.5em;
+	font-size:1.5rem;
 }
 #navbar .item {
-	padding-top:0.5em;
-	padding-bottom:0.5em;
-	padding-left:0.5em;
-	padding-right:0.5em;
+	padding-top:0.75rem;
+	padding-bottom:0.75rem;
+	padding-left:0.75rem;
+	padding-right:0.75rem;
 }
 #navbar .item .logo {
-	margin-top:0em;
-	margin-bottom:0em;
-	width:1.5em;
+	margin-top:0rem;
+	margin-bottom:0rem;
+	width:2.25rem;
 }
 #graphtv_logo {
-	margin-right:0.5em;
+	margin-right:0.75rem;
 }
 #github_logo {
-	margin-left:0.5em;
+	margin-left:0.75rem;
+}
+.result {
+	padding-top:0.35rem !important;
+}
+.result .content .description .column {
+	padding-top:0.25rem !important;
+	padding-bottom:0.5rem !important;
 }

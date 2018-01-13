@@ -9,44 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/master.css">
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 	<script src="assets/semantic/semantic.min.js"></script>
-	<script type="text/javascript">
-		// Just until I figure out where this stuff is supposed to go...
-		$(document).ready(function() {
-			$.getJSON('/assets/search.json', function(data) {
-				for (var i = 0; i < data.length; i++) {
-					data[i].d = data[i].y + ' | ' + data[i].r + '/10 | ' + data[i].v + ' votes';
-				}
-				console.log(data);
-				$('.ui.search').search({
-					apiSettings: {
-						url: 'search/{query}'
-					},
-					fields: {
-						title: 't',
-						description: 'd'
-					},
-					searchFields: [
-						't'
-					],
-					selectFirstResult: true,
-					onSelect: function (result, response) {
-						console.log(result);
-						console.log(response);
-					}
-				});
-			});
-			var content = [
-				{ title: 'Genji' }, { title: 'McCree' }, { title: 'Pharah' },
-				{ title: 'Reaper' }, { title: 'Soldier: 76' }, { title: 'Sombra' },
-				{ title: 'Tracer' }, { title: 'Bastion' }, { title: 'Hanzo' },
-				{ title: 'Junkrat' }, { title: 'Mei' }, { title: 'Torbjörn' },
-				{ title: 'Widowmaker' }, { title: 'D.Va' }, { title: 'Reinhardt' },
-				{ title: 'Roadhog' }, { title: 'Winston' }, { title: 'Zarya' },
-				{ title: 'Ana' }, { title: 'Lúcio' }, { title: 'Mercy' },
-				{ title: 'Symmetra' }, { title: 'Zenyatta' }
-			];
-		});
-	</script>
+	<script src="assets/js/master.js"></script>
 </head>
 <body>
 	<div class="ui fixed menu" id="navbar">
@@ -66,8 +29,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="ui middle aligned center aligned grid full-height">
-		<div class="column">
+	<div class="ui middle aligned center aligned grid full-height" id="search_content">
+		<div class="column" id="search_column">
 			<h2 class="ui blue image header">
 				<div class="content">Search for a TV Show</div>
 			</h2>
@@ -78,6 +41,11 @@
 				</div>
 				<div class="results"></div>
 			</div>
+		</div>
+	</div>
+	<div class="ui middle aligned center aligned grid full-height" id="chart_content">
+		<div class="column" id="chart_column">
+		This is some Chart Content!
 		</div>
 	</div>
 </body>
