@@ -16,7 +16,7 @@
 <body>
 	<div class="ui fixed menu" id="navbar">
 		<div class="ui container">
-			<a href="#" class="header item">
+			<a class="header item" id="graphtv_logo_link">
 				<img class="logo" id="graphtv_logo" src="assets/img/logo.svg">
 				GraphTV
 			</a>
@@ -24,7 +24,7 @@
 			<a class="item">Most Votes</a>
 			<div class="right menu">
 				<a class="item">About</a>
-				<a href="https://github.com/graphtv" class="item">
+				<a href="https://github.com/graphtv" class="item" target="_blank">
 					Contribute
 					<img class="logo" id="github_logo" src="assets/img/github.svg">
 				</a>
@@ -33,13 +33,13 @@
 	</div>
 	<div class="ui middle aligned center aligned grid full-height">
 		<div class="column" id="main_column">
-			<div class="row" id="search_row">
+			<div class="row" id="search_row" style="display:none;">
 				<h2 class="ui blue image header">
 					<div class="content">Search for a TV Show</div>
 				</h2>
 				<div class="ui fluid search">
 					<div class="ui action left input fluid">
-						<input class="prompt" type="text" placeholder="Stranger Things">
+						<input id="search_input" class="prompt" type="text" placeholder="Stranger Things">
 						<div class="ui blue button">Search</div>
 					</div>
 					<div class="results"></div>

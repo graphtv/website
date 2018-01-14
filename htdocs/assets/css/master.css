@@ -38,7 +38,6 @@ body > .grid {
 	padding-bottom:0.5rem !important;
 }
 #chart_row {
-	height:600px;
 }
 #chart_show_name {
 	font-size:3rem;
@@ -55,4 +54,10 @@ body > .grid {
 #chart_show_rating {
 	text-align:left;
 	padding-left:0.5rem;
+}
+#chart_scale_tip {
+	text-align:right;
+}
+#chart_scale_tip a:hover {
+	cursor:pointer;
 }
