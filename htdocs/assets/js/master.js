@@ -342,6 +342,8 @@ $(document).ready(function() {
 		// For point sizes and plot band titles
 		reduction_level = Math.floor(point_count / radius_reducer)
 		marker_size_mult = Math.pow(0.9, reduction_level);
+		// BUG: Going to have to figure something out for this...
+		// https://graphtv-dev.spectralcoding.com/?q=gDt
 		if (reduction_level < 2) {
 			season_abbrev = 'Season ';
 		} else if (reduction_level < 3) {
