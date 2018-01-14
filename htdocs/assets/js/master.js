@@ -32,18 +32,30 @@ $(document).ready(function() {
 		});
 	} else {
 		// Viewing the default page
-		$('#search_row').transition('fade in');
+		$('#content_row').html(
+			'<h2 class="ui blue image header">' +
+			'<div class="content">Search for a TV Show</div>' +
+			'</h2>' +
+			'<div class="ui fluid search">' +
+			'<div class="ui action left input fluid">' +
+			'<input id="search_input" class="prompt" type="text" placeholder="Stranger Things">' +
+			'<div class="ui blue button">Search</div>' +
+			'</div>' +
+			'<div class="results"></div>' +
+			'</div>'
+		);
+		$('#content_row').transition('fade in');
 		$('#search_input').focus();
 	}
 	$('#graphtv_logo_link').click(function(){
-		$('#chart_row').transition({
+		$('#content_row').transition({
 			animation: 'fade out',
 			onComplete: function() {
 				$('#main_column').css("max-width", "450px");
-				$('#chart_row').html();
+				$('#content_row').html();
 				window.chart = null;
 				window.history.pushState("", "", '/');
-				$('#search_row').transition('fade in');
+				$('#content_row').transition('fade in');
 			}
 		});
 	});
@@ -87,12 +99,12 @@ $(document).ready(function() {
 	});
 	function switchToChart(show_id, title, years, ratings, votes, show_data) {
 		console.log("Switch To Chart: " + show_id);
-		$('#search_row').transition({
+		$('#content_row').transition({
 			animation: 'fade out',
 			onComplete: function() {
 				$('#search_input').val('');
 				$('#main_column').css("max-width", "1500px");
-				$('#chart_row').html(
+				$('#content_row').html(
 					'<div style="display:inline-block">' +
 						'<h1 id="chart_show_name">' + title + '</h1>' +
 						'<div>' +
@@ -129,7 +141,7 @@ $(document).ready(function() {
 					window.history.pushState("", "", '/?q=' + show_id);
 				}
 				show_chart(show_id, show_data);
-				$('#chart_row').transition('fade in');
+				$('#content_row').transition('fade in');
 			}
 		});
 	}
@@ -142,11 +154,11 @@ $(document).ready(function() {
         'v': 1049294,
         'y': '2008-2013'
     }
-	$('#search_row').transition({
+	$('#content_row').transition({
 		animation: 'fade out',
 		onComplete: function() {
 			$('#main_column').css("max-width", "1500px");
-			$('#chart_row').html(
+			$('#content_row').html(
 				'<div style="display:inline-block">' +
 					'<h1 id="chart_show_name">' + search_result.t + '</h1>' +
 					'<div>' +
@@ -162,7 +174,7 @@ $(document).ready(function() {
 				'<div id="highcharts" style="height:600px;"></div>'
 			);
 			show_chart(search_result);
-			$('#chart_row').transition('fade in');
+			$('#content_row').transition('fade in');
 		}
 	});
 	*/
