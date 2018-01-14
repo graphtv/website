@@ -27,9 +27,6 @@ $(document).ready(function() {
 			}
 		},
 		onSelect: function (search_result, response) {
-			console.log("On Select:")
-			console.log(search_result);
-			console.log(response);
 			$('#search_row').transition({
 				animation: 'fade out',
 				onComplete: function() {
@@ -84,8 +81,21 @@ $(document).ready(function() {
 		animation: 'fade out',
 		onComplete: function() {
 			$('#main_column').css("max-width", "1500px");
-			$('#chart_row').html('<h1 id="chart_show_name">Breaking Bad</h1>' +
-				'<div id="highcharts" style="height:600px;"></div>');
+			$('#chart_row').html(
+				'<div style="display:inline-block">' +
+					'<h1 id="chart_show_name">' + search_result.t + '</h1>' +
+					'<div>' +
+						'<div style="float:left;">' +
+							'<h2 class="chart_show_info" id="chart_show_year">' + search_result.y + '</h2>' +
+						'</div>' +
+						'<div style="float:right;">' +
+							'<h2 class="chart_show_info" id="chart_show_rating">' + search_result.r + '/10 (' + search_result.v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' Votes)</h2>' +
+						'</div>' +
+						'<div style="float:clear;"></div>' +
+					'</div>' +
+				'</div>' +
+				'<div id="highcharts" style="height:600px;"></div>'
+			);
 			show_chart(search_result);
 			$('#chart_row').transition('fade in');
 		}
@@ -114,6 +124,7 @@ $(document).ready(function() {
 				// If there are more series than season_colors it will use season_colors_many
 				// and then loop through them.
 				season_colors = ['#1f78b4','#33a02c','#e31a1c','#ff7f00','#6a3d9a']
+				season_colors_bands = ['#a6cee3','#b2df8a','#fb9a99','#fdbf6f','#cab2d6'];
 				// Lighter Immediately After
 				//season_colors_many = ['#1f78b4','#a6cee3','#33a02c','#b2df8a','#e31a1c','#fb9a99','#ff7f00','#fdbf6f','#6a3d9a','#cab2d6'];
 				// Lighter Offset By 1
@@ -147,7 +158,17 @@ $(document).ready(function() {
 					}
 				});
 				gap_votes = most_votes - least_votes;
-				console.log(least_votes + ' - ' + most_votes + ' (' + gap_votes + ')');
+				// For point sizes and plot band titles
+				reduction_level = Math.floor(point_count / radius_reducer)
+				marker_size_mult = Math.pow(0.9, reduction_level);
+				if (reduction_level < 2) {
+					season_abbrev = 'Season ';
+				} else if (reduction_level < 3) {
+					season_abbrev = 'Sea ';
+				} else {
+					season_abbrev = 'S';
+				}
+				//console.log(least_votes + ' - ' + most_votes + ' (' + gap_votes + ')');
 				//console.log(series_obj);
 				// Create a list of seasons (we can't assume IMDB will have every season)
 				seasons = []
@@ -161,9 +182,10 @@ $(document).ready(function() {
 					season_colors = season_colors_many;
 				}
 				//console.log(seasons);
-				point_num = 0;
+				point_num = 1;
 				data_by_ep_num = {}
 				seasons.forEach(function(cur_season) {
+					//console.log(cur_season);
 					// Ordered Episodes for Season Data Points
 					ordered_eps = []
 					// XY Coordinate List for Linear Regression for Season Trend Line
@@ -185,7 +207,6 @@ $(document).ready(function() {
 						// Reduce the marker size based on the amount of episodes.
 						// Value is the same as marker_radius if less than
 						// radius_reducer shows
-						marker_size_mult = Math.pow(0.9, Math.floor(point_count / radius_reducer));
 						marker_radius = (marker_radius * marker_size_mult).toFixed(2);
 						ordered_eps.push({
 							x: point_num,
@@ -214,6 +235,23 @@ $(document).ready(function() {
 						data: [[start_x, start_y], [end_x, end_y]],
 						color: season_colors[(cur_season - 1) % season_colors.length]
 					}, false);
+					window.chart.xAxis[0].addPlotBand({
+						// The 0.5 here starts it half-way between the previous season's
+						// last episode and the current season's first episode
+						from: point_num - x_y_coords.length - 0.5,
+						// This should actually be point_num - 1 + 0.5, but simplified below
+						to: point_num - 0.5,
+						label: {
+							text: season_abbrev + cur_season,
+							verticalAlign: 'bottom'
+						}
+						// Playing with some code to add plot bands...
+						// Works, but not sure if we want it...
+						//color: season_colors_bands[(cur_season - 1) % season_colors.length],
+						// And vertical lines between the seasons...
+						//borderColor: '#000000',
+						//borderWidth: 1,
+					});
 				});
 				window.all_eps = data_by_ep_num;
 				window.chart.redraw();
@@ -231,20 +269,25 @@ $(document).ready(function() {
 				type: 'scatter',
 				zoomType: 'xy'
 			},
+			credits: {
+				enabled: false
+			},
 			title: { text: '' },
 			xAxis: {
-				title: {
-					enabled: true,
-					text: 'Episode Number'
+				labels: {
+					enabled: false
 				},
-				startOnTick: true,
-				endOnTick: true,
-				showLastLabel: true
+				minorTicks: false,
+				tickColor: 'transparent',
+				title: {
+					enabled: false,
+				}
 			},
 			yAxis: {
 				title: {
 					text: 'Episode Rating'
-				}
+				},
+				max: 10
 			},
 			legend: {
 				enabled: false
