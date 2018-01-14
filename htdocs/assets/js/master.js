@@ -44,6 +44,7 @@ $(document).ready(function() {
 			'<div class="results"></div>' +
 			'</div>'
 		);
+		initializeSearch();
 		$('#content_row').transition('fade in');
 		$('#search_input').focus();
 	}
@@ -52,51 +53,66 @@ $(document).ready(function() {
 			animation: 'fade out',
 			onComplete: function() {
 				$('#main_column').css("max-width", "450px");
-				$('#content_row').html();
+				// Refactor this code to NOT be in two places.
+				$('#content_row').html(
+					'<h2 class="ui blue image header">' +
+					'<div class="content">Search for a TV Show</div>' +
+					'</h2>' +
+					'<div class="ui fluid search">' +
+					'<div class="ui action left input fluid">' +
+					'<input id="search_input" class="prompt" type="text" placeholder="Stranger Things">' +
+					'<div class="ui blue button">Search</div>' +
+					'</div>' +
+					'<div class="results"></div>' +
+					'</div>'
+				);
+				initializeSearch();
 				window.chart = null;
 				window.history.pushState("", "", '/');
 				$('#content_row').transition('fade in');
 			}
 		});
 	});
-	$('.ui.search').search({
-		apiSettings: {
-			url: 'https://api.graphtv-dev.spectralcoding.com/search/{query}'
-		},
-		selectFirstResult: true,
-		showNoResults: true,
-		minCharacters: 3,
-		type: 'shows',
-		templates: {
-			shows: function (response) {
-				html = '';
-				response.results.forEach(function(curShow) {
-					if (curShow['r'] != -1) {
-						rating = curShow['r'] + '/10';
-					} else {
-						rating = 'No Rating';
-					}
-					html += '<a class="result"><div class="content"><div class="title">' + curShow['t'] + '</div>' +
-						'<div class="description ui three column grid">' +
-						'<div class="column">' + curShow['y'] + '</div>' +
-						'<div class="column">' + rating + '</div>' +
-						'<div class="column">' + curShow['v'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' Votes</div>' +
-						'</div></div></a>';
-				});
-				return html;
-			}
-		},
-		onSelect: function (search_result, response) {
-			switchToChart(
-				search_result.i,
-				search_result.t,
-				search_result.y,
-				search_result.r,
-				search_result.v,
-				null
-			);
-		},
-	});
+	function initializeSearch() {
+		$('.ui.search').search({
+			apiSettings: {
+				url: 'https://api.graphtv-dev.spectralcoding.com/search/{query}'
+			},
+			selectFirstResult: true,
+			showNoResults: true,
+			minCharacters: 3,
+			type: 'shows',
+			templates: {
+				shows: function (response) {
+					html = '';
+					response.results.forEach(function(curShow) {
+						if (curShow['r'] != -1) {
+							rating = curShow['r'] + '/10';
+						} else {
+							rating = 'No Rating';
+						}
+						html += '<a class="result"><div class="content"><div class="title">' + curShow['t'] + '</div>' +
+							'<div class="description ui three column grid">' +
+							'<div class="column">' + curShow['y'] + '</div>' +
+							'<div class="column">' + rating + '</div>' +
+							'<div class="column">' + curShow['v'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' Votes</div>' +
+							'</div></div></a>';
+					});
+					return html;
+				}
+			},
+			onSelect: function (search_result, response) {
+				switchToChart(
+					search_result.i,
+					search_result.t,
+					search_result.y,
+					search_result.r,
+					search_result.v,
+					null
+				);
+			},
+		});
+	}
 	function switchToChart(show_id, title, years, ratings, votes, show_data) {
 		console.log("Switch To Chart: " + show_id);
 		$('#content_row').transition({
