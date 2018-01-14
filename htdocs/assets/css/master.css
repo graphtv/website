@@ -37,3 +37,22 @@ body > .grid {
 	padding-top:0.25rem !important;
 	padding-bottom:0.5rem !important;
 }
+#chart_row {
+	height:600px;
+}
+#chart_show_name {
+	font-size:3rem;
+	margin:0rem 0rem 0rem 0rem;
+}
+.chart_show_info {
+	font-size:1rem;
+	display:inline;
+}
+#chart_show_year {
+	text-align:right;
+	padding-right:0.5rem;
+}
+#chart_show_rating {
+	text-align:left;
+	padding-left:0.5rem;
+}

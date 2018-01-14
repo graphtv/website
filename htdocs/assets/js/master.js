@@ -34,8 +34,21 @@ $(document).ready(function() {
 				animation: 'fade out',
 				onComplete: function() {
 					$('#main_column').css("max-width", "1500px");
-					$('#chart_row').html('<h1 id="chart_show_name">Breaking Bad</h1>' +
-						'<div id="highcharts" style="height:600px;"></div>');
+					$('#chart_row').html(
+						'<div style="display:inline-block">' +
+							'<h1 id="chart_show_name">' + search_result.t + '</h1>' +
+							'<div>' +
+								'<div style="float:left;">' +
+									'<h2 class="chart_show_info" id="chart_show_year">' + search_result.y + '</h2>' +
+								'</div>' +
+								'<div style="float:right;">' +
+									'<h2 class="chart_show_info" id="chart_show_rating">' + search_result.r + '/10 (' + search_result.v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' Votes)</h2>' +
+								'</div>' +
+								'<div style="float:clear;"></div>' +
+							'</div>' +
+						'</div>' +
+						'<div id="highcharts" style="height:600px;"></div>'
+					);
 					show_chart(search_result);
 					$('#chart_row').transition('fade in');
 				}
@@ -153,9 +166,8 @@ $(document).ready(function() {
 				seasons.forEach(function(cur_season) {
 					// Ordered Episodes for Season Data Points
 					ordered_eps = []
-					// XY Coordinates for Linear Regression for Season Trend Line
+					// XY Coordinate List for Linear Regression for Season Trend Line
 					x_y_coords = []
-					//console.log("Season: " + cur_season);
 					// Create a list of episodes (we can't assume IMDB will have every episode)
 					episodes = []
 					for (k in series_obj[cur_season]) {
@@ -164,8 +176,6 @@ $(document).ready(function() {
 						}
 					}
 					episodes.sort(function(a, b){return a-b});
-					//console.log("Episodes: ");
-					//console.log(episodes);
 					episodes.forEach(function(cur_episode) {
 						cur_ep_obj = series_obj[cur_season][cur_episode]
 						x_y_coords.push([point_num, cur_ep_obj.r]);
@@ -183,18 +193,22 @@ $(document).ready(function() {
 							marker: { radius: Math.max(marker_radius, minimum_radius) }
 						});
 						data_by_ep_num[point_num] = series_obj[cur_season][cur_episode]
-						//console.log(point_num + ' - S' + cur_season + 'E' + cur_episode);
 						point_num++;
 					});
-					//console.log(ordered_eps);
+					// Add the point for the episode
+					// Color here takes the zero-indexed season number and gets a color
+					// based on the index (looping around the color list using modulo)
 					window.chart.addSeries({
 						data: ordered_eps,
 						color: season_colors[(cur_season - 1) % season_colors.length]
 					}, false);
+					// Use linear regression to calculate (X1, Y1), (X2, Y2) points
+					// for the season trend line
 					start_x = x_y_coords[0][0];
 					start_y = ss.linearRegressionLine(ss.linearRegression(x_y_coords))(start_x);
 					end_x = x_y_coords[x_y_coords.length - 1][0];
 					end_y = ss.linearRegressionLine(ss.linearRegression(x_y_coords))(end_x);
+					// Add the season trend line
 					window.chart.addSeries({
 						type: 'line',
 						data: [[start_x, start_y], [end_x, end_y]],
@@ -217,12 +231,7 @@ $(document).ready(function() {
 				type: 'scatter',
 				zoomType: 'xy'
 			},
-			title: {
-				text: 'Height Versus Weight of 507 Individuals by Gender'
-			},
-			subtitle: {
-				text: 'Source: Heinz  2003'
-			},
+			title: { text: '' },
 			xAxis: {
 				title: {
 					enabled: true,
