@@ -9,6 +9,8 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/master.css">
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 	<script src="assets/semantic/semantic.min.js"></script>
+	<script src="assets/highcharts/highcharts.js"></script>
+	<script src="assets/simple-statistics/simple-statistics.min.js"></script>
 	<script src="assets/js/master.js"></script>
 </head>
 <body>
@@ -29,23 +31,22 @@
 			</div>
 		</div>
 	</div>
-	<div class="ui middle aligned center aligned grid full-height" id="search_content">
-		<div class="column" id="search_column">
-			<h2 class="ui blue image header">
-				<div class="content">Search for a TV Show</div>
-			</h2>
-			<div class="ui fluid search">
-				<div class="ui action left input fluid">
+	<div class="ui middle aligned center aligned grid full-height">
+		<div class="column" id="main_column">
+			<div class="row" id="search_row">
+				<h2 class="ui blue image header">
+					<div class="content">Search for a TV Show</div>
+				</h2>
+				<div class="ui fluid search">
+					<div class="ui action left input fluid">
 						<input class="prompt" type="text" placeholder="Stranger Things">
-					<div class="ui blue button">Search</div>
+						<div class="ui blue button">Search</div>
+					</div>
+					<div class="results"></div>
 				</div>
-				<div class="results"></div>
 			</div>
-		</div>
-	</div>
-	<div class="ui middle aligned center aligned grid full-height" id="chart_content">
-		<div class="column" id="chart_column">
-		This is some Chart Content!
+			<div class="row" id="chart_row" style="display:none;">
+			</div>
 		</div>
 	</div>
 </body>
