@@ -20,10 +20,9 @@
 				<img class="logo" id="graphtv_logo" src="assets/img/logo.svg">
 				GraphTV
 			</a>
-			<a class="item">Top Searches</a>
-			<a class="item">Most Votes</a>
+			<a class="item" id="popular_link">Popular Shows</a>
 			<div class="right menu">
-				<a class="item">About</a>
+				<a class="item" id="about_link">About</a>
 				<a href="https://github.com/graphtv" class="item" target="_blank">
 					Contribute
 					<img class="logo" id="github_logo" src="assets/img/github.svg">
@@ -31,9 +30,54 @@
 			</div>
 		</div>
 	</div>
-	<div class="ui middle aligned center aligned grid full-height">
-		<div class="column" id="main_column">
-			<div class="row" id="content_row" style="display:none;"></div>
+	<div class="ui middle aligned center aligned grid full-height" id="search_page" style="display:none;">
+		<div class="column main_column">
+			<div class="row content_row">
+				<h2 class="ui blue image header">
+					<div class="content">Search for a TV Show</div>
+				</h2>
+				<div class="ui fluid search">
+					<div class="ui action left input fluid">
+						<input id="search_input" class="prompt" type="text" placeholder="Stranger Things">
+						<div class="ui blue button">Search</div>
+					</div>
+					<div class="results"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ui middle aligned center aligned grid full-height" id="chart_page" style="display:none;">
+		<div class="column main_column" style="max-width:1500px;">
+			<div class="row content_row">
+				<div style="display:inline-block">
+					<h1 id="chart_show_title">Title</h1>
+					<div>
+						<div style="float:left;">
+							<h2 class="chart_show_info" id="chart_show_year">####-####</h2>
+						</div>
+						<div style="float:right;">
+							<h2 class="chart_show_info" id="chart_show_rating">#.#/10 (#### Votes)</h2>
+						</div>
+						<div style="float:clear;"></div>
+					</div>
+				</div>
+				<div id="highcharts" style="height:600px;"></div>
+				<div id="chart_scale_tip"><a title="Scale 0 to 10">[ Scale 0 to 10 ]</a></div>
+			</div>
+		</div>
+	</div>
+	<div class="ui middle aligned center aligned grid full-height" id="popular_page" style="display:none;">
+		<div class="column main_column" style="max-width:1500px;">
+			<div class="row content_row">
+				Some Popular Page Content!
+			</div>
+		</div>
+	</div>
+	<div class="ui middle aligned center aligned grid full-height" id="about_page" style="display:none;">
+		<div class="column main_column" style="max-width:1500px;">
+			<div class="row content_row">
+				Some About Page Content!
+			</div>
 		</div>
 	</div>
 </body>

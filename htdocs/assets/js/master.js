@@ -13,282 +13,179 @@ var getUrlParameter = function getUrlParameter(sParam) {
 	}
 };
 $(document).ready(function() {
+	function fadeAll(onHidden) {
+		oneWasVisible = false;
+		if ($('#search_page').transition('is visible')) {
+			$('#search_page').transition({
+				animation: 'fade out',
+				onComplete: function() {
+					$('#search_input').val('');
+					onHidden();
+				}
+			});
+			oneWasVisible = true;
+		}
+		if ($('#chart_page').transition('is visible')) {
+			$('#chart_page').transition({
+				animation: 'fade out',
+				onComplete: function() {
+					resetChart();
+					onHidden();
+				}
+			});
+			oneWasVisible = true;
+		}
+		if ($('#about_page').transition('is visible')) {
+			$('#about_page').transition({
+				animation: 'fade out',
+				onComplete: function() {
+					onHidden();
+				}
+			});
+			oneWasVisible = true;
+		}
+		if ($('#popular_page').transition('is visible')) {
+			$('#popular_page').transition({
+				animation: 'fade out',
+				onComplete: function() {
+					onHidden();
+				}
+			});
+			oneWasVisible = true;
+		}
+		if (!oneWasVisible) {
+			// Ensure that the code always gets run even if no
+			// pages actually needed to get faded.
+			onHidden();
+		}
+	}
 	q_value = getUrlParameter('q');
 	if (q_value) {
+		if (q_value == 'about') {
+			$('#about_page').transition('fade in');
+		} else if (q_value == 'popular') {
+			$('#popular_page').transition('fade in');
+		} else {
 		// We're linking directly to a show page
-		$.ajax({
-			url: 'https://api.graphtv-dev.spectralcoding.com/show/' + q_value + '/ratings',
-			success: function(ratings_data) {
-				switchToChart(
-					-1,
-					ratings_data.t,
-					ratings_data.y,
-					ratings_data.r,
-					ratings_data.v,
-					ratings_data
-				);
-			},
-			cache: false
-		});
+			$.ajax({
+				url: 'https://api.graphtv-dev.spectralcoding.com/show/' + q_value + '/ratings',
+				success: function(ratings_data) {
+					switchToChart(
+						-1,
+						ratings_data.t,
+						ratings_data.y,
+						ratings_data.r,
+						ratings_data.v,
+						ratings_data
+					);
+				},
+				cache: false
+			});
+		}
 	} else {
 		// Viewing the default page
-		$('#content_row').html(
-			'<h2 class="ui blue image header">' +
-			'<div class="content">Search for a TV Show</div>' +
-			'</h2>' +
-			'<div class="ui fluid search">' +
-			'<div class="ui action left input fluid">' +
-			'<input id="search_input" class="prompt" type="text" placeholder="Stranger Things">' +
-			'<div class="ui blue button">Search</div>' +
-			'</div>' +
-			'<div class="results"></div>' +
-			'</div>'
-		);
-		initializeSearch();
-		$('#content_row').transition('fade in');
+		$('#search_page').transition('fade in');
 		$('#search_input').focus();
 	}
 	$('#graphtv_logo_link').click(function(){
-		$('#content_row').transition({
-			animation: 'fade out',
-			onComplete: function() {
-				$('#main_column').css("max-width", "450px");
-				// Refactor this code to NOT be in two places.
-				$('#content_row').html(
-					'<h2 class="ui blue image header">' +
-					'<div class="content">Search for a TV Show</div>' +
-					'</h2>' +
-					'<div class="ui fluid search">' +
-					'<div class="ui action left input fluid">' +
-					'<input id="search_input" class="prompt" type="text" placeholder="Stranger Things">' +
-					'<div class="ui blue button">Search</div>' +
-					'</div>' +
-					'<div class="results"></div>' +
-					'</div>'
-				);
-				initializeSearch();
-				window.chart = null;
-				window.history.pushState("", "", '/');
-				$('#content_row').transition('fade in');
-			}
+		fadeAll(function() {
+			// Set the page URL to the show URL
+			window.history.pushState("", "", '/');
+			$('#search_page').transition('fade in');
+			$('#search_input').focus();
 		});
 	});
-	function initializeSearch() {
-		$('.ui.search').search({
-			apiSettings: {
-				url: 'https://api.graphtv-dev.spectralcoding.com/search/{query}'
-			},
-			selectFirstResult: true,
-			showNoResults: true,
-			minCharacters: 3,
-			type: 'shows',
-			templates: {
-				shows: function (response) {
-					html = '';
-					response.results.forEach(function(curShow) {
-						if (curShow['r'] != -1) {
-							rating = curShow['r'] + '/10';
-						} else {
-							rating = 'No Rating';
-						}
-						html += '<a class="result"><div class="content"><div class="title">' + curShow['t'] + '</div>' +
-							'<div class="description ui three column grid">' +
-							'<div class="column">' + curShow['y'] + '</div>' +
-							'<div class="column">' + rating + '</div>' +
-							'<div class="column">' + curShow['v'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' Votes</div>' +
-							'</div></div></a>';
-					});
-					return html;
-				}
-			},
-			onSelect: function (search_result, response) {
-				switchToChart(
-					search_result.i,
-					search_result.t,
-					search_result.y,
-					search_result.r,
-					search_result.v,
-					null
-				);
-			},
+	$('#about_link').click(function(){
+		fadeAll(function() {
+			// Set the page URL to the show URL
+			window.history.pushState("", "", '/?q=about');
+			$('#about_page').transition('fade in');
 		});
-	}
-	function switchToChart(show_id, title, years, ratings, votes, show_data) {
-		console.log("Switch To Chart: " + show_id);
-		$('#content_row').transition({
-			animation: 'fade out',
-			onComplete: function() {
-				$('#search_input').val('');
-				$('#main_column').css("max-width", "1500px");
-				$('#content_row').html(
-					'<div style="display:inline-block">' +
-						'<h1 id="chart_show_name">' + title + '</h1>' +
-						'<div>' +
-							'<div style="float:left;">' +
-								'<h2 class="chart_show_info" id="chart_show_year">' + years + '</h2>' +
-							'</div>' +
-							'<div style="float:right;">' +
-								'<h2 class="chart_show_info" id="chart_show_rating">' + ratings + '/10 (' + votes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' Votes)</h2>' +
-							'</div>' +
-							'<div style="float:clear;"></div>' +
-						'</div>' +
-					'</div>' +
-					'<div id="highcharts" style="height:600px;"></div>' +
-					'<div id="chart_scale_tip"><a title="Scale 0 to 10">[ Scale 0 to 10 ]</a></div>'
-				);
-				$('#chart_scale_tip a').click(function(event){
-					if (event.target.innerText == '[ Scale 0 to 10 ]') {
-						$('#chart_scale_tip a').html("[ Automatic Scaling ]");
-						window.chart.yAxis[0].update({
-							min: 0
-						});
-					} else {
-						$('#chart_scale_tip a').html("[ Scale 0 to 10 ]");
-						window.chart.yAxis[0].update({
-							min: null
-						});
-					}
-				});
-				// We want to eventually change the page URL and then go directly to the
-				// graph when that page is pulled up. How to we serve the homepage
-				// from any URL that doesn't have static content (such as images/js/css)?
-				// Maybe we just have to do like https://hostname/?q=[id]
-				if (show_id != -1) {
-					window.history.pushState("", "", '/?q=' + show_id);
-				}
-				show_chart(show_id, show_data);
-				$('#content_row').transition('fade in');
-			}
+	});
+	$('#popular_link').click(function(){
+		fadeAll(function() {
+			// Set the page URL to the show URL
+			window.history.pushState("", "", '/?q=popular');
+			$('#popular_page').transition('fade in');
 		});
-	}
-	// Start temp code to auto-transition during debugging
-	/*
-	search_result = {
-        'i': '3N6z',
-        'r': 9.5,
-        't': 'Breaking Bad',
-        'v': 1049294,
-        'y': '2008-2013'
-    }
-	$('#content_row').transition({
-		animation: 'fade out',
-		onComplete: function() {
-			$('#main_column').css("max-width", "1500px");
-			$('#content_row').html(
-				'<div style="display:inline-block">' +
-					'<h1 id="chart_show_name">' + search_result.t + '</h1>' +
-					'<div>' +
-						'<div style="float:left;">' +
-							'<h2 class="chart_show_info" id="chart_show_year">' + search_result.y + '</h2>' +
-						'</div>' +
-						'<div style="float:right;">' +
-							'<h2 class="chart_show_info" id="chart_show_rating">' + search_result.r + '/10 (' + search_result.v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' Votes)</h2>' +
-						'</div>' +
-						'<div style="float:clear;"></div>' +
-					'</div>' +
-				'</div>' +
-				'<div id="highcharts" style="height:600px;"></div>'
-			);
-			show_chart(search_result);
-			$('#content_row').transition('fade in');
+	});
+	$('#chart_scale_tip a').click(function(event){
+		if (event.target.innerText == '[ Scale 0 to 10 ]') {
+			$('#chart_scale_tip a').html("[ Automatic Scaling ]");
+			window.chart.yAxis[0].update({ min: 0 });
+		} else {
+			$('#chart_scale_tip a').html("[ Scale 0 to 10 ]");
+			window.chart.yAxis[0].update({ min: null });
 		}
 	});
-	*/
-	// End temp code
-	function show_chart(show_id, show_data) {
-		console.log("Show Chart: " + show_id);
-		window.chart = new Highcharts.Chart({
-			chart: {
-				renderTo: 'highcharts',
-				type: 'scatter',
-				zoomType: 'xy'
-			},
-			credits: {
-				enabled: false
-			},
-			title: { text: '' },
-			xAxis: {
-				labels: {
-					enabled: false
-				},
-				minorTicks: false,
-				tickColor: 'transparent',
-				title: {
-					enabled: false,
-				}
-			},
-			yAxis: {
-				title: {
-					text: 'Episode Rating'
-				},
-				max: 10
-			},
-			legend: {
-				enabled: false
-			},
-			plotOptions: {
-				line: {
-					marker: {
-						enabled: false
-					},
-					states: {
-						hover: {
-							lineWidth: 0
-						}
-					},
-					enableMouseTracking: false
-				},
-				scatter: {
-					marker: {
-						symbol: 'circle',
-						states: {
-							hover: {
-								enabled: true,
-								lineColor: 'rgb(100,100,100)'
-							}
-						}
-					},
-					states: {
-						hover: {
-							marker: {
-								enabled: false
-							}
-						}
-					},
-				},
-				series: {
-					turboThreshold: 50000
-				}
-			},
-			tooltip: {
-				formatter: function() {
-					show_obj = window.all_eps[this.x];
-					season_str = ((show_obj.s < 10) ? '0' + show_obj.s : show_obj.s)
-					episode_str = ((show_obj.e < 10) ? '0' + show_obj.e : show_obj.e)
-					return '<b>S' + season_str + 'E' + episode_str + ': ' + show_obj.t + '</b><br />' +
-					show_obj.r + ' - ' + show_obj.v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' Votes';
-				}
+	$('.ui.search').search({
+		apiSettings: {
+			url: 'https://api.graphtv-dev.spectralcoding.com/search/{query}'
+		},
+		selectFirstResult: true,
+		showNoResults: true,
+		minCharacters: 3,
+		type: 'shows',
+		templates: {
+			shows: function (response) {
+				html = '';
+				response.results.forEach(function(curShow) {
+					if (curShow['r'] != -1) {
+						rating = curShow['r'] + '/10';
+					} else {
+						rating = 'No Rating';
+					}
+					html += '<a class="result"><div class="content"><div class="title">' + curShow['t'] + '</div>' +
+						'<div class="description ui three column grid">' +
+						'<div class="column">' + curShow['y'] + '</div>' +
+						'<div class="column">' + rating + '</div>' +
+						'<div class="column">' + curShow['v'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' Votes</div>' +
+						'</div></div></a>';
+				});
+				return html;
 			}
+		},
+		onSelect: function (search_result, response) {
+			switchToChart(
+				search_result.i,
+				search_result.t,
+				search_result.y,
+				search_result.r,
+				search_result.v,
+				null
+			);
+		},
+	});
+	function switchToChart(show_id, title, years, ratings, votes, show_data) {
+		fadeAll(function() {
+			$('#chart_page #chart_show_title').html(title);
+			$('#chart_page #chart_show_year').html(years);
+			$('#chart_page #chart_show_rating').html(ratings + '/10 (' + votes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' Votes)');
+			// Set the page URL to the show URL
+			if (show_id != -1) {
+				window.history.pushState("", "", '/?q=' + show_id);
+			}
+			resetChart();
+			getRatings(show_id, show_data);
+			$('#chart_page').transition('fade in');
 		});
-		get_ratings(show_id, show_data);
-	};
-	function get_ratings(show_id, show_data) {
+	}
+	function getRatings(show_id, show_data) {
 		console.log('Get Ratings: ' + show_id);
 		if (show_id == -1) {
-			chart_ratings(show_data);
+			chartRatings(show_data);
 		} else {
 			// We don't have it, so load it from the API
 			$.ajax({
 				url: 'https://api.graphtv-dev.spectralcoding.com/show/' + show_id + '/ratings',
 				success: function(ratings_data) {
-					chart_ratings(ratings_data);
+					chartRatings(ratings_data);
 				},
 				cache: false
 			});
 		}
 	}
-	function chart_ratings(ratings_data) {
-		console.log(ratings_data);
+	function chartRatings(ratings_data) {
 		// Radius for the episode with the most votes
 		large_radius = 10;
 		// Radius for the episode with the least votes
@@ -315,8 +212,6 @@ $(document).ready(function() {
 		// Same Colors Just Looped More
 		season_colors_many = season_colors
 		range_radius = large_radius - small_radius;
-		//console.log('Ratings Data:');
-		//console.log(ratings_data);
 		ep_list = ratings_data.l
 		point_count = 0
 		series_obj = {}
@@ -325,7 +220,6 @@ $(document).ready(function() {
 		least_votes = -1
 		most_votes = -1
 		Object.keys(ep_list).forEach(function(ep_id) {
-			//console.log(ep_id, ep_list[ep_id]);
 			ep_data = ep_list[ep_id];
 			// If there is no rating then we don't chart it.
 			if (ep_data.hasOwnProperty('r')) {
@@ -351,8 +245,6 @@ $(document).ready(function() {
 		} else {
 			season_abbrev = 'S';
 		}
-		//console.log(least_votes + ' - ' + most_votes + ' (' + gap_votes + ')');
-		//console.log(series_obj);
 		// Create a list of seasons (we can't assume IMDB will have every season)
 		seasons = []
 		for (k in series_obj) {
@@ -364,11 +256,9 @@ $(document).ready(function() {
 		if (seasons.length > season_colors.length) {
 			season_colors = season_colors_many;
 		}
-		//console.log(seasons);
 		point_num = 1;
 		data_by_ep_num = {}
 		seasons.forEach(function(cur_season) {
-			//console.log(cur_season);
 			// Ordered Episodes for Season Data Points
 			ordered_eps = []
 			// XY Coordinate List for Linear Regression for Season Trend Line
@@ -438,5 +328,64 @@ $(document).ready(function() {
 		});
 		window.all_eps = data_by_ep_num;
 		window.chart.redraw();
+	}
+	function resetChart() {
+		window.chart = new Highcharts.Chart({
+			chart: {
+				renderTo: 'highcharts',
+				type: 'scatter',
+				zoomType: 'xy'
+			},
+			credits: {
+				enabled: false
+			},
+			title: { text: '' },
+			xAxis: {
+				labels: { enabled: false },
+				minorTicks: false,
+				tickColor: 'transparent',
+				title: { enabled: false, }
+			},
+			yAxis: {
+				title: { text: 'Episode Rating' },
+				max: 10
+			},
+			legend: { enabled: false },
+			plotOptions: {
+				line: {
+					marker: { enabled: false },
+					states: {
+						hover: { lineWidth: 0 }
+					},
+					enableMouseTracking: false
+				},
+				scatter: {
+					marker: {
+						symbol: 'circle',
+						states: {
+							hover: {
+								enabled: true,
+								lineColor: 'rgb(100,100,100)'
+							}
+						}
+					},
+					states: {
+						hover: {
+							marker: { enabled: false }
+						}
+					},
+				},
+				series: { turboThreshold: 50000 }
+			},
+			tooltip: {
+				formatter: function() {
+					show_obj = window.all_eps[this.x];
+					season_str = ((show_obj.s < 10) ? '0' + show_obj.s : show_obj.s)
+					episode_str = ((show_obj.e < 10) ? '0' + show_obj.e : show_obj.e)
+					return '<b>S' + season_str + 'E' + episode_str + ': ' + show_obj.t + '</b><br />' +
+					show_obj.r + ' - ' + show_obj.v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' Votes';
+				}
+			}
+		});
 	}
 });

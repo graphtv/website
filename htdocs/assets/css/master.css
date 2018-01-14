@@ -7,7 +7,7 @@ body > .grid {
 .full-height {
 	height:100%;
 }
-#main_column {
+.main_column {
 	max-width: 450px;
 }
 #navbar {
@@ -39,13 +39,22 @@ body > .grid {
 }
 #chart_row {
 }
-#chart_show_name {
+#chart_show_title {
 	font-size:3rem;
 	margin:0rem 0rem 0rem 0rem;
 }
 .chart_show_info {
 	font-size:1rem;
 	display:inline;
+}
+#chart_page {
+	margin-top:0rem;
+}
+#about_page {
+	margin-top:0rem;
+}
+#popular_page {
+	margin-top:0rem;
 }
 #chart_show_year {
 	text-align:right;
