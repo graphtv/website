@@ -14,6 +14,53 @@ var getUrlParameter = function getUrlParameter(sParam) {
 	}
 };
 $(document).ready(function() {
+	activateProperPage();
+	function activateProperPage() {
+		// Still seems to be some bugs with Microsoft Edge
+		// properly managing titles. Chrome 64 and Firefox 57 work
+		q_value = getUrlParameter('q');
+		if (q_value) {
+			if (q_value == 'about') {
+				fadeAll(function() {
+					document.title = 'GraphTV :: About';
+					$('#about_page').transition('fade in');
+				});
+			} else if (q_value == 'popular') {
+				fadeAll(function() {
+					document.title = 'GraphTV :: Popular Shows';
+					$('#popular_page').transition('fade in');
+				});
+			} else {
+				fadeAll(function() {
+					// We're linking directly to a show page
+					$.ajax({
+						url: 'https://' + apiEndpointHostname + '/show/' + q_value + '/ratings',
+						success: function(ratings_data) {
+							switchToChart(
+								-1,
+								ratings_data.t,
+								ratings_data.y,
+								ratings_data.r,
+								ratings_data.v,
+								ratings_data
+							);
+						},
+						cache: false
+					});
+				});
+			}
+		} else {
+			fadeAll(function() {
+				// Viewing the default page
+				document.title = 'GraphTV :: Graph Your Favorite TV Shows';
+				$('#search_page').transition('fade in');
+				$('#search_input').focus();
+			});
+		}
+	}
+	$(window).on("popstate", function(e) {
+		activateProperPage();
+	});
 	function fadeAll(onHidden) {
 		oneWasVisible = false;
 		if ($('#search_page').transition('is visible')) {
@@ -60,38 +107,11 @@ $(document).ready(function() {
 			onHidden();
 		}
 	}
-	q_value = getUrlParameter('q');
-	if (q_value) {
-		if (q_value == 'about') {
-			$('#about_page').transition('fade in');
-		} else if (q_value == 'popular') {
-			$('#popular_page').transition('fade in');
-		} else {
-		// We're linking directly to a show page
-			$.ajax({
-				url: 'https://' + apiEndpointHostname + '/show/' + q_value + '/ratings',
-				success: function(ratings_data) {
-					switchToChart(
-						-1,
-						ratings_data.t,
-						ratings_data.y,
-						ratings_data.r,
-						ratings_data.v,
-						ratings_data
-					);
-				},
-				cache: false
-			});
-		}
-	} else {
-		// Viewing the default page
-		$('#search_page').transition('fade in');
-		$('#search_input').focus();
-	}
 	$('#graphtv_logo_link').click(function(){
 		fadeAll(function() {
 			// Set the page URL to the show URL
 			window.history.pushState("", "", '/');
+			document.title = 'GraphTV :: Graph Your Favorite TV Shows';
 			$('#search_page').transition('fade in');
 			$('#search_input').focus();
 		});
@@ -100,6 +120,7 @@ $(document).ready(function() {
 		fadeAll(function() {
 			// Set the page URL to the show URL
 			window.history.pushState("", "", '/?q=about');
+			document.title = 'GraphTV :: About';
 			$('#about_page').transition('fade in');
 		});
 	});
@@ -107,6 +128,7 @@ $(document).ready(function() {
 		fadeAll(function() {
 			// Set the page URL to the show URL
 			window.history.pushState("", "", '/?q=popular');
+			document.title = 'GraphTV :: Popular Shows';
 			$('#popular_page').transition('fade in');
 		});
 	});
@@ -164,7 +186,10 @@ $(document).ready(function() {
 			$('#chart_page #chart_show_rating').html(ratings + '/10 (' + votes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' Votes)');
 			// Set the page URL to the show URL
 			if (show_id != -1) {
-				window.history.pushState("", "", '/?q=' + show_id);
+				if (getUrlParameter('q') != show_id) {
+					window.history.pushState("", "", '/?q=' + show_id);
+				}
+				document.title = 'GraphTV :: ' + title;
 			}
 			resetChart();
 			getRatings(show_id, show_data);
