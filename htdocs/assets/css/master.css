@@ -46,6 +46,7 @@ body > .grid {
 }
 #chart_page {
 	margin-top:0rem;
+	padding-top:60px;
 }
 #chart_show_year {
 	text-align:right;
