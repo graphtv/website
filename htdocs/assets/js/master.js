@@ -171,7 +171,6 @@ $(document).ready(function() {
 		});
 	}
 	function getRatings(show_id, show_data) {
-		console.log('Get Ratings: ' + show_id);
 		if (show_id == -1) {
 			chartRatings(show_data);
 		} else {

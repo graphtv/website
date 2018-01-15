@@ -31,8 +31,8 @@
 		</div>
 	</div>
 	<div class="ui middle aligned center aligned grid full-height" id="search_page" style="display:none;">
-		<div class="column main_column">
-			<div class="row content_row">
+		<div class="column" style="max-width:450px;">
+			<div class="row">
 				<h2 class="ui blue image header">
 					<div class="content">Search for a TV Show</div>
 				</h2>
@@ -47,10 +47,10 @@
 		</div>
 	</div>
 	<div class="ui middle aligned center aligned grid full-height" id="chart_page" style="display:none;">
-		<div class="column main_column" style="max-width:1500px;">
-			<div class="row content_row">
+		<div class="column" style="max-width:1500px;">
+			<div class="row">
 				<div style="display:inline-block">
-					<h1 id="chart_show_title">Title</h1>
+					<h1 class="page_title" id="chart_show_title">Title</h1>
 					<div>
 						<div style="float:left;">
 							<h2 class="chart_show_info" id="chart_show_year">####-####</h2>
@@ -66,17 +66,92 @@
 			</div>
 		</div>
 	</div>
-	<div class="ui middle aligned center aligned grid full-height" id="popular_page" style="display:none;">
-		<div class="column main_column" style="max-width:1500px;">
-			<div class="row content_row">
-				Some Popular Page Content!
+	<div class="ui center aligned grid full-height" id="popular_page" style="display:none;">
+		<div class="column" style="padding-top:5rem;max-width:1500px;">
+			<div class="row">
+				<h1 class="page_title">Popular Shows</h1>
+				<p>Some Popular Page Content!</p>
 			</div>
 		</div>
 	</div>
-	<div class="ui middle aligned center aligned grid full-height" id="about_page" style="display:none;">
-		<div class="column main_column" style="max-width:1500px;">
-			<div class="row content_row">
-				Some About Page Content!
+	<div class="ui container center aligned grid full-height" id="about_page" style="display:none;">
+		<div class="ui left aligned column" style="padding-top:5rem;max-width:1500px;">
+			<div class="row">
+				<h1 class="page_title">About</h1>
+			</div>
+			<div class="row">
+				<h2 class="page_subtitle">What is GraphTV?</h1>
+				<p>GraphTV is a tool for visualizing IMDb series ratings. A lot can be told about a series from looking at episode ratings and season trends.</P>
+				<p>You can quickly answer some interesting questions like:</p>
+				<div class="ui bulleted list">
+					<div class="item">How has a long running series aged? <a href="/?q=p9D" target="_blank">The Simpsons</a></div>
+					<div class="item">Did it take a season or two before the writers hit their stride? <a href="/?q=5jlG" target="_blank">Parks and Recreation</a></div>
+					<div class="item">What's the best episode in an anthology series? <a href="/?q=8KpZ" target="_blank">Black Mirror</a></div>
+					<div class="item">Was one episode really out of place in a series? <a href="/?q=jbZA" target="_blank">Stranger Things</a></div>
+					<div class="item">How are the series' season finales? <a href="/?q=9X6G" target="_blank">Orange Is the New Black</a></div>
+				</div>
+				<p>It is HEAVILY inspired by <a href="http://kevinformatics.com/" target="_blank">Kevin Wu</a>'s pioneering website <a href="http://graphtv.kevinformatics.com/" target="_blank">GraphTV</a> which doesn't appear to be under development any longer.</p>
+				<h2 class="page_subtitle">Tips?</h1>
+				<div class="ui bulleted list" id="tips_list">
+					<div class="item">Colors indicate season</div>
+					<div class="item">Trend line shows the season's rating over time</div>
+					<div class="item">Episode dot sizes based off the relative number of votes for that episode</div>
+					<div class="item">Tooltips show Season #, Episode #, Title, Rating, and Votes</div>
+					<div class="item">Click and grag to zoom in on busy areas</div>
+				</div>
+				<h2 class="page_subtitle">Feedback?</h1>
+				<p>Feedback is always welcome! Coming soon is a direct feedback feature on each page to send data directly to the website maintainer.</p>
+				<p>For now, contact Caesar Kabalan using:</p>
+				<div class="ui bulleted list">
+					<div class="item">Email: <a href="mailto:caesar.kabalan@gmail.com?subject=GraphTV%20Feedback">caesar.kabalan@gmail.com</a>.</p></div>
+					<div class="item">Twitter: <a href="https://twitter.com/CaesarKabalan" target="_blank">@CaesarKabalan</a> or <a href="https://twitter.com/search?q=%23graphtv" target="_blank">#graphtv</a></div>
+					<div class="item">GitHub Issue: <a href="https://github.com/graphtv/website/issues" target="_blank">Website Issues</a></div>
+				</div>
+				<h2 class="page_subtitle">Development</h1>
+				<p>The code for the website and all back-end functionality is FULLY open sourced under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank">GPLv3 License</a>. The source code is hosted in the <a href="https://github.com/graphtv" target="_blank">GraphTV GitHub Organization</a> maintained by <a href="https://www.caesarkabalan.com/" target="_blank">Caesar Kabalan</a>. The goal was to build a scalable web applications using current cloud architectures. As many best practices as possible were followed and are all documented in the GitHub Org.</p>
+				<p>Any and all contributions are valued! The best way to contribute is in the form of a GitHub pull request or issue. No contribution to small, even fixing typos in documentation!</p>
+				<p>A brief overview of technologies used to bring you this web application:</a>
+				<div class="ui bulleted list">
+					<div class="item">
+						<div><a href="https://aws.amazon.com/" target="_blank">Amazon Web Services</a> for infrastructure hosting:</div>
+						<div class="list">
+							<div class="item"><a href="https://aws.amazon.com/cloudfront/" target="_blank">CloudFront</a> for content delivery</div>
+							<div class="item"><a href="https://aws.amazon.com/api-gateway/" target="_blank">API Gateway</a> as an API Endpoint</div>
+							<div class="item"><a href="https://aws.amazon.com/lambda/" target="_blank">Lambda</a> for serverless back-end</div>
+							<div class="item"><a href="https://aws.amazon.com/dynamodb/" target="_blank">DynamoDB</a> as a show/episode database</div>
+							<div class="item"><a href="https://aws.amazon.com/route53/" target="_blank">Route53</a> for dynamic DNS</div>
+							<div class="item"><a href="https://aws.amazon.com/certificate-manager/" target="_blank">Certificate Manager</a> for free SSL certificates</div>
+							<div class="item"><a href="https://aws.amazon.com/s3/" target="_blank">S3</a> for content hosting and storage</div>
+							<div class="item"><a href="https://aws.amazon.com/cloudformation/" target="_blank">CloudFormation</a> for deploying every service above</div>
+						</div>
+					</div>
+					<div class="item">
+						<div>Programming Technologies:</div>
+						<div class="list">
+							<div class="item"><a href="https://www.python.org/" target="_blank">Python 3.6</a> for back-end services</div>
+							<div class="item"><a href="https://serverless.com/" target="_blank">Serverless Framework</a> for AWS Lambda deployments</div>
+							<div class="item"><a href="https://semantic-ui.com/" target="_blank">Semantic UI</a> as the CSS Framework</div>
+							<div class="item"><a href="https://simplestatistics.org/" target="_blank">Simple Statistics</a> for the Linear Regression calculations</div>
+							<div class="item"><a href="https://www.highcharts.com/" target="_blank">Highcharts</a> for the main chart</div>
+							<div class="item"><a href="https://jquery.com/" target="_blank">jQuery</a> for general Javascript usage</div>
+						</div>
+					</div>
+					<div class="item">
+						<div>Data Sources:</div>
+						<div class="list">
+							<div class="item"><a href="http://www.imdb.com/interfaces/" target="_blank">IMDb Interfaces</a> for all series, episode, rating, and vote data</div>
+						</div>
+					</div>
+				</div>
+				<h2 class="page_subtitle">Honorable Mentions</h1>
+				<p>The following links also have content similar to this website, but are by different authors:</p>
+				<div class="ui bulleted list">
+					<div class="item"><a href="http://graphtv.kevinformatics.com/" target="_blank">http://graphtv.kevinformatics.com/</a></div>
+					<div class="item"><a href="https://tv.obtuse.io/" target="_blank">https://tv.obtuse.io/</a></div>
+					<div class="item"><a href="https://tvplot.herokuapp.com/" target="_blank">https://tvplot.herokuapp.com/</a></div>
+					<div class="item"><a href="https://shiny.maximewack.com/GraphTV/" target="_blank">https://shiny.maximewack.com/GraphTV/</a></div>
+				</div>
+				<br />
 			</div>
 		</div>
 	</div>

@@ -7,9 +7,6 @@ body > .grid {
 .full-height {
 	height:100%;
 }
-.main_column {
-	max-width: 450px;
-}
 #navbar {
 	font-size:1.5rem;
 }
@@ -39,7 +36,7 @@ body > .grid {
 }
 #chart_row {
 }
-#chart_show_title {
+.page_title {
 	font-size:3rem;
 	margin:0rem 0rem 0rem 0rem;
 }
@@ -48,12 +45,6 @@ body > .grid {
 	display:inline;
 }
 #chart_page {
-	margin-top:0rem;
-}
-#about_page {
-	margin-top:0rem;
-}
-#popular_page {
 	margin-top:0rem;
 }
 #chart_show_year {
@@ -69,4 +60,26 @@ body > .grid {
 }
 #chart_scale_tip a:hover {
 	cursor:pointer;
+}
+#about_page {
+	margin-top:0rem;
+	font-size:18px;
+}
+#about_page h2 {
+	font-size:26px;
+}
+#about_page .page_title {
+	text-align:center;
+}
+#about_page p {
+	padding-left:2rem !important;
+}
+#about_page .list {
+	padding-left:4rem;
+}
+#about_page #tips_list {
+	padding-left:2rem;
+}
+#popular_page {
+	margin-top:0rem;
 }
