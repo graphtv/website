@@ -1,3 +1,4 @@
+var apiEndpointHostname = 'api.graphtv-dev.spectralcoding.com';
 var getUrlParameter = function getUrlParameter(sParam) {
 	var sPageURL = decodeURIComponent(window.location.search.substring(1)),
 		sURLVariables = sPageURL.split('&'),
@@ -68,7 +69,7 @@ $(document).ready(function() {
 		} else {
 		// We're linking directly to a show page
 			$.ajax({
-				url: 'https://api.graphtv-dev.spectralcoding.com/show/' + q_value + '/ratings',
+				url: 'https://' + apiEndpointHostname + '/show/' + q_value + '/ratings',
 				success: function(ratings_data) {
 					switchToChart(
 						-1,
@@ -120,7 +121,7 @@ $(document).ready(function() {
 	});
 	$('.ui.search').search({
 		apiSettings: {
-			url: 'https://api.graphtv-dev.spectralcoding.com/search/{query}'
+			url: 'https://' + apiEndpointHostname + '/search/{query}'
 		},
 		selectFirstResult: true,
 		showNoResults: true,
@@ -176,7 +177,7 @@ $(document).ready(function() {
 		} else {
 			// We don't have it, so load it from the API
 			$.ajax({
-				url: 'https://api.graphtv-dev.spectralcoding.com/show/' + show_id + '/ratings',
+				url: 'https://' + apiEndpointHostname + '/show/' + show_id + '/ratings',
 				success: function(ratings_data) {
 					chartRatings(ratings_data);
 				},
