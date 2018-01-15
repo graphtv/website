@@ -57,6 +57,7 @@ body > .grid {
 }
 #chart_scale_tip {
 	text-align:right;
+	padding-right:0.75rem;
 }
 #chart_scale_tip a:hover {
 	cursor:pointer;
