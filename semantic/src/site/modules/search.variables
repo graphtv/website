@@ -1,3 +1,6 @@
 /*******************************
          Site Overrides
 *******************************/
+/* Remove default large rounding on search inputs */
+@promptBorderRadius: @defaultBorderRadius;
+@resultTitleFontSize: @relativeLarge;
