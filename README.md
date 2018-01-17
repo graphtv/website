@@ -5,9 +5,13 @@
 1. Clone repository
 2. Enter `semantic/`
 3. `npm install`
-	* Will automatically build the output
-
-Make changes and regenerate output files with `gulp build`.
+	* Will automatically build the Semantic UI config files ([semantic/src](semantic/src)) into CSS/JS ([htdocs/assets/semantic](htdocs/assets/semantic))
+4. Modify the first line of [htdocs/assets/js/master.js](htdocs/assets/js/master.js) so that `apiEndpointHostname` is set to the API endpoint hostname (usually beginning with `api.`)
+5. Optional: If you're doing modifications or development work this is where you make changes and test.
+	* Any Semantic UI changes (under [semantic](semantic)) must be compiled with `gulp build` from the [semantic](semantic) directory.
+	* Quick docker command for a local nginx instance: `docker run -v /path/to/graphtv/website/htdocs:/usr/share/nginx/html:ro -p 80:80 -d nginx nginx-debug -g 'daemon off;'`
+6. Upload to your S3 bucket using `aws s3 sync htdocs/ s3://bucket-name/ --delete`. Recommend testing with `--dryrun` as well.
+7. Invalidate caches in CloudFront (Note: Invalidating `/*` doesn't cost extra, it just may impact users until files are cached again)
 
 ## Build Status
 
